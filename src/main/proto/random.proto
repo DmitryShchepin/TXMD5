@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package random_generator;
+
+option go_package = "./random_generator_pb";
+
+
+message GenerateRandomNumberEncryptedRequest {
+  bytes encrypted_data = 1;
+}
+
+message GenerateRandomNumberEncryptedResponse {
+  bytes encrypted_data = 1;
+}
+
+message GetPublicKeyRequest {
+}
+
+message GetPublicKeyResponse {
+  string public_key = 1;
+  string aes_key = 2;
+}
+
+message ExchangePublicKeyRequest {
+  string aes_key_encrypted = 1;
+}
+
+message ExchangePublicKeyResponse {
+  bool success = 1;
+}
+
+service GeneratorService {
+  rpc BidirectionalStreamGenerateRandomNumberEncrypted(stream GenerateRandomNumberEncryptedRequest) returns (stream GenerateRandomNumberEncryptedResponse);
+
+  rpc GetPublicKey(GetPublicKeyRequest) returns(GetPublicKeyResponse);
+  rpc ExchangePublicKey(ExchangePublicKeyRequest) returns(ExchangePublicKeyResponse);
+}
